@@ -339,9 +339,6 @@ function invalidateCart() {
             </div>
 
             <template v-if="cartData">
-              {{
-                cartData.items.find((i) => i.productId === product.id)?.quantity
-              }}
               <Button
                 v-if="
                   !cartData.items.find((i) => i.productId === product.id)
