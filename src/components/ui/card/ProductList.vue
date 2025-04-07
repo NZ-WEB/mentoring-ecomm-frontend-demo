@@ -138,7 +138,6 @@ watch(
 </script>
 
 <template>
-  {{ cartData }}
   <ul v-if="products" class="grid grid-rows-1 gap-2 grid-cols-4">
     <li v-for="product in products.products" :key="product.id">
       <Card class="h-full relative">
