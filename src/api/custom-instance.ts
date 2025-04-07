@@ -1,5 +1,5 @@
 import { APP_CONFIG } from '@/config';
-import Axios, { type AxiosError, type AxiosRequestConfig } from 'axios';
+import Axios, { AxiosError, type AxiosRequestConfig } from 'axios';
 
 export const AXIOS_INSTANCE = Axios.create({
   baseURL: APP_CONFIG.API_URL,
@@ -25,7 +25,6 @@ export const customInstance = <T>(
   return promise;
 };
 
-// In some case with react-query and swr you want to be able to override the return error type so you can also do it here like this
 export type ErrorType<E = Error> = AxiosError<E>;
 
 export type BodyType<BodyData> = BodyData;
