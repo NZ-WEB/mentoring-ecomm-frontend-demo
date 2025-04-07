@@ -29,7 +29,16 @@
 import { Button } from '@/components/ui/button';
 import { X, ShoppingCart } from 'lucide-vue-next';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
-import { Dialog } from '@/components/ui/dialog';
+
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 
 import {
   NumberField,
@@ -40,14 +49,27 @@ import {
 } from '@/components/ui/number-field';
 
 import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import {
   getProductControllerFindAllQueryKey,
   useProductControllerFindAll,
   useProductControllerRemove,
 } from './api/products/products.ts';
 
-import { watch } from 'vue';
+import { Gap } from '@/components/ui/Gap';
+import { Textarea } from '@/components/ui/textarea';
+import { toTypedSchema } from '@vee-validate/zod';
+import { useForm } from 'vee-validate';
+import { watch, ref } from 'vue';
 
 import { Toaster } from 'vue-sonner';
+import * as z from 'zod';
 import { useQueryClient } from '@tanstack/vue-query';
 import type { CartResponseDto, ProductListResponseDto } from '@/api/model';
 import {
@@ -59,10 +81,39 @@ import {
 } from '@/api/cart/cart.ts';
 import { Badge } from '@/components/ui/badge';
 import { APP_CONFIG } from '@/config';
+import { useCreateProductWithProviders } from './infrostruct/service';
 
 const USER_ID = APP_CONFIG.USER_ID;
 const { data: products } = useProductControllerFindAll();
 const queryClient = useQueryClient();
+
+const { create: createProduct, response: createProductResponse } =
+  useCreateProductWithProviders();
+
+watch(createProductResponse, () => {
+  isCreateModalOpen.value = false;
+});
+
+const formSchema = toTypedSchema(
+  z.object({
+    name: z.string().min(2).max(50),
+    description: z.string().max(2000),
+    price: z.number().positive(),
+    imageUrl: z.string(),
+    stock: z.number(),
+    category: z.string(),
+  }),
+);
+
+const { isFieldDirty, handleSubmit } = useForm({
+  validationSchema: formSchema,
+});
+
+const onSubmit = handleSubmit((data) => {
+  createProduct({
+    data,
+  });
+});
 
 const { mutate: deleteProduct, data: removeResponse } =
   useProductControllerRemove();
@@ -73,6 +124,8 @@ const handleDeleteProduct = (productId: number) => {
 };
 
 const { data: cartData } = useCartControllerGetCart({ userId: USER_ID });
+
+const isCreateModalOpen = ref(false);
 
 watch(removeResponse, () => {
   invalidateProductFindAll();
@@ -167,7 +220,122 @@ function invalidateCart() {
   <div class="p-4">
     <div class="flex items-center gap-2 mb-4">
       <h1>Товары</h1>
-      <Dialog />
+
+      <Dialog v-model:open="isCreateModalOpen">
+        <DialogTrigger as-child>
+          <Button variant="outline"> Добавить товар </Button>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Добавление товара</DialogTitle>
+            <DialogDescription>
+              Введите данные для добавления товара и сохраните результат
+            </DialogDescription>
+          </DialogHeader>
+          <form class="max-h-[70vh] overflow-scroll" @submit="onSubmit">
+            <FormField
+              v-slot="{ componentField }"
+              name="name"
+              :validate-on-blur="!isFieldDirty"
+            >
+              <FormItem v-auto-animate>
+                <FormLabel>Название товара</FormLabel>
+                <FormControl>
+                  <Input type="text" v-bind="componentField" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            </FormField>
+
+            <Gap size="sm" />
+
+            <FormField
+              v-slot="{ componentField }"
+              name="description"
+              :validate-on-blur="!isFieldDirty"
+            >
+              <FormItem v-auto-animate>
+                <FormLabel>Описание товара</FormLabel>
+                <FormControl>
+                  <Textarea v-bind="componentField" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            </FormField>
+
+            <Gap size="sm" />
+
+            <FormField
+              v-slot="{ componentField }"
+              name="price"
+              :validate-on-blur="!isFieldDirty"
+            >
+              <FormItem v-auto-animate>
+                <FormLabel>Цена</FormLabel>
+                <FormControl>
+                  <Input type="number" v-bind="componentField" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            </FormField>
+
+            <Gap size="sm" />
+
+            <FormField
+              v-slot="{ componentField }"
+              name="imageUrl"
+              :validate-on-blur="!isFieldDirty"
+            >
+              <FormItem v-auto-animate>
+                <FormLabel>Изображение</FormLabel>
+                <FormControl>
+                  <Input type="text" v-bind="componentField" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            </FormField>
+
+            <Gap size="sm" />
+
+            <FormField
+              v-slot="{ componentField }"
+              name="stock"
+              :validate-on-blur="!isFieldDirty"
+            >
+              <FormItem v-auto-animate>
+                <FormLabel>Осталось товаров</FormLabel>
+                <FormControl>
+                  <Input type="number" v-bind="componentField" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            </FormField>
+
+            <Gap size="sm" />
+
+            <FormField
+              v-slot="{ componentField }"
+              name="category"
+              :validate-on-blur="!isFieldDirty"
+            >
+              <FormItem v-auto-animate>
+                <FormLabel>Категория</FormLabel>
+                <FormControl>
+                  <Input type="text" v-bind="componentField" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            </FormField>
+
+            <Gap size="sm" />
+
+            <DialogFooter>
+              <Button class="w-full" type="submit"> Добавить </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+
       <Badge v-if="cartData" class="h-6 rounded-2xl">
         <ShoppingCart />
         {{ cartData.items?.reduce((acc, item) => (acc += item.quantity), 0) }}
