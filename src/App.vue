@@ -1,7 +1,34 @@
 <script setup lang="ts">
-import { Button } from "@/components/ui/button";
-import { X, ShoppingCart } from "lucide-vue-next";
-import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+/**
+ * Бизнес экшны (то, что должно быть покрыто тестами)
+ *
+ * - Создание товара
+ * - Удаление товара
+ * - Добавление товара в корзину
+ * - Удаление товара из корзины
+ * - Обновление количества товара в корзине
+ */
+
+/**
+ * Проблемы текущего кода
+ *
+ * - При выполнении экшнов выполняются лишние запросы
+ * Например: после изменения количества товара в корзине обновляется запрос корзины,
+ * хотя мы могли установить новое количество и не выполнять запрос
+ * - Код сложно тестировать
+ * - Код сложно читать
+ * - Константы и статический текст не вынесен
+ */
+
+/**
+ * Разбиваем на компоненты
+ *
+ * Форма создания товара
+ */
+
+import { Button } from '@/components/ui/button';
+import { X, ShoppingCart } from 'lucide-vue-next';
+import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 
 import {
   Dialog,
@@ -11,7 +38,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog';
 
 import {
   NumberField,
@@ -19,7 +46,7 @@ import {
   NumberFieldDecrement,
   NumberFieldIncrement,
   NumberFieldInput,
-} from "@/components/ui/number-field";
+} from '@/components/ui/number-field';
 
 import {
   FormControl,
@@ -27,46 +54,43 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 import {
   getProductControllerFindAllQueryKey,
-  useProductControllerCreate,
   useProductControllerFindAll,
   useProductControllerRemove,
-} from "./api/products/products.ts";
+} from './api/products/products.ts';
 
-import { Gap } from "@/components/ui/Gap";
-import { Textarea } from "@/components/ui/textarea";
-import { toTypedSchema } from "@vee-validate/zod";
-import { useForm } from "vee-validate";
-import { watch, ref } from "vue";
-import { Toaster, toast } from "vue-sonner";
-import * as z from "zod";
-import { useQueryClient } from "@tanstack/vue-query";
-import type { CartResponseDto, ProductListResponseDto } from "@/api/model";
+import { Gap } from '@/components/ui/Gap';
+import { Textarea } from '@/components/ui/textarea';
+import { toTypedSchema } from '@vee-validate/zod';
+import { useForm } from 'vee-validate';
+import { watch, ref } from 'vue';
+
+import { Toaster } from 'vue-sonner';
+import * as z from 'zod';
+import { useQueryClient } from '@tanstack/vue-query';
+import type { CartResponseDto, ProductListResponseDto } from '@/api/model';
 import {
   getCartControllerGetCartQueryKey,
   useCartControllerAddToCart,
   useCartControllerGetCart,
   useCartControllerRemoveFromCart,
   useCartControllerUpdateCartItem,
-} from "@/api/cart/cart.ts";
-import { Badge } from "@/components/ui/badge";
-import { APP_CONFIG } from "@/config";
+} from '@/api/cart/cart.ts';
+import { Badge } from '@/components/ui/badge';
+import { APP_CONFIG } from '@/config';
+import { useCreateProductWithProviders } from './infrostruct/service';
 
 const USER_ID = APP_CONFIG.USER_ID;
 const { data: products } = useProductControllerFindAll();
 const queryClient = useQueryClient();
 
-const {
-  mutate: createProduct,
-  error: createProductError,
-  data: createProductResponse,
-} = useProductControllerCreate();
+const { create: createProduct, response: createProductResponse } =
+  useCreateProductWithProviders();
 
 watch(createProductResponse, () => {
-  invalidateProductFindAll();
   isCreateModalOpen.value = false;
 });
 
@@ -89,12 +113,6 @@ const onSubmit = handleSubmit((data) => {
   createProduct({
     data,
   });
-});
-
-watch(createProductError, (newError) => {
-  if (newError) {
-    toast(newError.message);
-  }
 });
 
 const { mutate: deleteProduct, data: removeResponse } =
@@ -137,7 +155,7 @@ watch(
 );
 
 const handleRemoveFromCart = (productId: number) => {
-  if (!cartData.value) throw new Error("Cart does not exist");
+  if (!cartData.value) throw new Error('Cart does not exist');
 
   const itemId = cartData.value.items.find(
     (item) => item.productId === productId,
@@ -157,7 +175,7 @@ const handleRemoveFromCart = (productId: number) => {
 };
 
 const handleUpdateCartQuantity = (productId: number, quantity: number) => {
-  if (!cartData.value) throw new Error("Cart does not exist");
+  if (!cartData.value) throw new Error('Cart does not exist');
 
   const itemId = cartData.value.items.find(
     (item) => item.productId === productId,
