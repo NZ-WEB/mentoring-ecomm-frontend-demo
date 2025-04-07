@@ -10,7 +10,19 @@
 		"baseUrl": ".",
 		"paths": {
 			"@/*": ["./src/*"]
-		}
+		},
+		"types": ["vite/client"],
+		"jsx": "preserve"
 	},
-	"include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"]
+	"vueCompilerOptions": {
+		"target": 3.3,
+		"experimentalDefinePropProposal": "kevin"
+	},
+	"include": [
+		"src/**/*.ts",
+		"src/**/*.d.ts",
+		"src/**/*.tsx",
+		"src/**/*.vue"
+	],
+	"exclude": ["node_modules"]
 }
