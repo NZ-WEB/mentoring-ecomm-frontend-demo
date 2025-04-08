@@ -1,53 +1,86 @@
-import { type UseMutationReturnType } from '@tanstack/vue-query';
-import { watch } from 'vue';
-import type { ErrorType } from '@/domain/models';
-import type { Product } from '@/domain/models/product';
-import type { INotifier } from '@/domain/services/notifier';
-import type { ProductsQueryManager } from '@/domain/services/queries';
+import { describe, it, vi, expect, beforeEach } from "vitest";
+import { createProduct, type ProductDTO } from "./createProduct";
+import type { CreateProductDependencies } from "./createProduct";
+import type { Product } from "@/domain/models/product";
 
-export type CreateProductMutation = UseMutationReturnType<
-  Product,
-  ErrorType,
-  { data: ProductDTO },
-  Product
->;
+describe("createProduct", () => {
+  const mockNotify = vi.fn();
+  const mockInvalidateProductsQuery = vi.fn();
+  const mockCreateProductApi = vi.fn();
 
-export interface CreateProductProviders {
-  notifier: INotifier;
-  createProductMutation: CreateProductMutation;
-  productsQueryManager: ProductsQueryManager;
-}
+  let deps: CreateProductDependencies;
 
-export type ProductDTO = {
-  name: string;
-  description?: string;
-  price: number;
-  imageUrl?: string;
-  stock: number;
-  category?: string;
-};
-export function useCreateProduct(providers: CreateProductProviders) {
-  const { notifier, createProductMutation, productsQueryManager } = providers;
+  beforeEach(() => {
+    vi.resetAllMocks();
 
-  watch(
-    () => createProductMutation.error.value,
-    (newError) => {
-      if (newError) {
-        notifier.notify(newError.message);
-      }
-    },
-  );
+    deps = {
+      notifier: { notify: mockNotify },
+      productsQueryManager: {
+        invalidateProductQuery: vi.fn(),
+        invalidateProductsQuery: mockInvalidateProductsQuery,
+        setProductQueryData: vi.fn(),
+        setProductsQueryData: vi.fn(),
+      },
+      createProductApi: mockCreateProductApi,
+    };
+  });
 
-  watch(
-    () => createProductMutation.data.value,
-    () => {
-      productsQueryManager.invalidateProductsQuery();
-    },
-  );
+  it("should call createProductApi with correct data", async () => {
+    const data: ProductDTO = {
+      name: "Test Product",
+      price: 50,
+      stock: 10,
+    };
 
-  return {
-    create: createProductMutation.mutate,
-    isPending: createProductMutation.isPending,
-    response: createProductMutation.data,
-  };
-}
+    mockCreateProductApi.mockResolvedValueOnce({ id: 1, ...data } as Product);
+
+    await createProduct({ data }, deps);
+
+    expect(mockCreateProductApi).toHaveBeenCalledWith({ data });
+  });
+
+  it("should invalidate products query after successful creation", async () => {
+    const data: ProductDTO = {
+      name: "Product",
+      price: 100,
+      stock: 1,
+    };
+
+    mockCreateProductApi.mockResolvedValueOnce({ id: 1, ...data } as Product);
+
+    await createProduct({ data }, deps);
+
+    expect(
+      deps.productsQueryManager.invalidateProductsQuery,
+    ).toHaveBeenCalled();
+  });
+
+  it("should notify with error message when createProductApi fails", async () => {
+    const error = new Error("Something went wrong");
+    mockCreateProductApi.mockRejectedValueOnce(error);
+
+    const data: ProductDTO = {
+      name: "Error Product",
+      price: 10,
+      stock: 2,
+    };
+
+    await createProduct({ data }, deps);
+
+    expect(mockNotify).toHaveBeenCalledWith("Something went wrong");
+  });
+
+  it("should not invalidate products query when createProductApi fails", async () => {
+    mockCreateProductApi.mockRejectedValueOnce(new Error("API failed"));
+
+    const data: ProductDTO = {
+      name: "Failing Product",
+      price: 20,
+      stock: 5,
+    };
+
+    await createProduct({ data }, deps);
+
+    expect(mockInvalidateProductsQuery).not.toHaveBeenCalled();
+  });
+});
