@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { watch } from 'vue';
-import type { CartResponseDto } from '@/api/model';
+import type { CartData } from '@/domain/models';
 import { getCartControllerGetCartQueryKey } from '@/api/cart/cart.ts';
 import { Button } from '@/components/ui/button';
+import type { Ref } from 'vue';
 import {
   NumberField,
   NumberFieldContent,
@@ -19,11 +20,16 @@ import {
 
 import { APP_CONFIG } from '@/config';
 import { useQueryClient } from '@tanstack/vue-query';
+import { useCartControllerGetCart } from '@/api/cart/cart.ts';
 
 const queryClient = useQueryClient();
 const USER_ID = APP_CONFIG.USER_ID;
-const props = defineProps<{
-  cartData: CartResponseDto;
+
+const { data: cartData } = useCartControllerGetCart({
+  userId: USER_ID,
+}) as { data: Ref<CartData> };
+
+defineProps<{
   productId: number;
 }>();
 
@@ -54,9 +60,9 @@ const handleUpdateCount = (productId: number, quantity: number) => {
 };
 
 const handleRemoveFromCart = (productId: number) => {
-  if (!props.cartData) throw new Error('Cart does not exist');
+  if (!cartData) throw new Error('Cart does not exist');
 
-  const itemId = props.cartData.items.find(
+  const itemId = cartData.value.items?.find(
     (item) => item.productId === productId,
   );
 
@@ -68,15 +74,15 @@ const handleRemoveFromCart = (productId: number) => {
   removeFromCart({
     itemId: itemId.id,
     params: {
-      cartId: props.cartData.id,
+      cartId: cartData.value.id,
     },
   });
 };
 
 const handleUpdateCartQuantity = (productId: number, quantity: number) => {
-  if (!props.cartData) throw new Error('Cart does not exist');
+  if (!cartData) throw new Error('Cart does not exist');
 
-  const itemId = props.cartData.items.find(
+  const itemId = cartData.value.items?.find(
     (item) => item.productId === productId,
   );
 
@@ -88,14 +94,14 @@ const handleUpdateCartQuantity = (productId: number, quantity: number) => {
   updateCartQuantity({
     data: {
       itemId: itemId.id,
-      cartId: props.cartData.id,
+      cartId: cartData.value.id,
       quantity: quantity,
     },
   });
 };
 
 function invalidateCart() {
-  queryClient.invalidateQueries<CartResponseDto>({
+  queryClient.invalidateQueries<CartData>({
     queryKey: getCartControllerGetCartQueryKey({ userId: USER_ID }),
   });
 }
@@ -109,9 +115,7 @@ watch(
 </script>
 <template>
   <Button
-    v-if="
-      !props.cartData.items.find((i) => i.productId === productId)?.quantity
-    "
+    v-if="!cartData.items?.find((i) => i.productId === productId)?.quantity"
     class="mb-0 mt-auto"
     @click="handleAddToCart(productId)"
   >
@@ -120,7 +124,7 @@ watch(
   <NumberField
     v-else
     :model-value="
-      props.cartData.items.find((i) => i.productId === productId)?.quantity || 1
+      cartData.items?.find((i) => i.productId === productId)?.quantity || 1
     "
     :min="0"
     @update:model-value="handleUpdateCount(productId, $event)"

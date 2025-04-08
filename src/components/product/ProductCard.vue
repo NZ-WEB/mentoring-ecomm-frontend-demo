@@ -4,8 +4,6 @@ import { X } from 'lucide-vue-next';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 import { watch } from 'vue';
 import { ProductCardActions } from '@/components/product';
-import { APP_CONFIG } from '@/config';
-import { useCartControllerGetCart } from '@/api/cart/cart.ts';
 
 import {
   getProductControllerFindAllQueryKey,
@@ -20,10 +18,7 @@ defineProps<{
   product: Product;
 }>();
 
-const USER_ID = APP_CONFIG.USER_ID;
-const { data: cartData } = useCartControllerGetCart({ userId: USER_ID });
 const queryClient = useQueryClient();
-
 const { mutate: deleteProduct, data: removeResponse } =
   useProductControllerRemove();
 
@@ -45,7 +40,7 @@ watch(removeResponse, () => {
 </script>
 
 <template>
-  <Card v-if="cartData" class="h-full relative">
+  <Card class="h-full relative">
     <CardHeader class="h-full">
       <CardTitle>
         {{ product.name }}
@@ -56,7 +51,7 @@ watch(removeResponse, () => {
       <div>
         <span class="font-bold text-lg"> {{ product.price }}₽ </span>
       </div>
-      <ProductCardActions :productId="product.id" :cartData="cartData" />
+      <ProductCardActions :productId="product.id" />
       <Button
         variant="outline"
         size="sm"
