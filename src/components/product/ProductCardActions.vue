@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { watch } from 'vue';
-import type { CartResponseDto, ProductResponseDto } from '@/api/model';
+import type { CartResponseDto } from '@/api/model';
 import { getCartControllerGetCartQueryKey } from '@/api/cart/cart.ts';
 import { Button } from '@/components/ui/button';
 import {
@@ -24,7 +24,7 @@ const queryClient = useQueryClient();
 const USER_ID = APP_CONFIG.USER_ID;
 const props = defineProps<{
   cartData: CartResponseDto;
-  product: ProductResponseDto;
+  productId: number;
 }>();
 
 const { mutate: addToCard, data: addToCardResponse } =
@@ -110,21 +110,20 @@ watch(
 <template>
   <Button
     v-if="
-      !props.cartData.items.find((i) => i.productId === product.id)?.quantity
+      !props.cartData.items.find((i) => i.productId === productId)?.quantity
     "
     class="mb-0 mt-auto"
-    @click="handleAddToCart(product.id)"
+    @click="handleAddToCart(productId)"
   >
     Добавить в корзину
   </Button>
   <NumberField
     v-else
     :model-value="
-      props.cartData.items.find((i) => i.productId === product.id)?.quantity ||
-      1
+      props.cartData.items.find((i) => i.productId === productId)?.quantity || 1
     "
     :min="0"
-    @update:model-value="handleUpdateCount(product.id, $event)"
+    @update:model-value="handleUpdateCount(productId, $event)"
   >
     <NumberFieldContent>
       <NumberFieldDecrement />

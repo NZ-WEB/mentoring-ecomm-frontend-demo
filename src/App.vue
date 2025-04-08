@@ -29,7 +29,7 @@ import { ShoppingCart } from 'lucide-vue-next';
 import { ProductCreateDialog } from '@/components/ui/dialog';
 import { Toaster } from 'vue-sonner';
 import { Badge } from '@/components/ui/badge';
-import { ProductList } from '@/components/ui/card';
+import { ProductList } from '@/components/product';
 import { APP_CONFIG } from '@/config';
 import { useCartControllerGetCart } from '@/api/cart/cart.ts';
 

@@ -56,7 +56,7 @@ watch(removeResponse, () => {
       <div>
         <span class="font-bold text-lg"> {{ product.price }}₽ </span>
       </div>
-      <ProductCardActions :product="product" :cartData="cartData" />
+      <ProductCardActions :productId="product.id" :cartData="cartData" />
       <Button
         variant="outline"
         size="sm"
