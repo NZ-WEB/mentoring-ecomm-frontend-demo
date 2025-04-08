@@ -1,7 +1,7 @@
-import type { Product } from "@/domain/models/product";
-import type { INotifier } from "@/domain/services/notifier";
-import type { ProductsQueryManager } from "@/domain/services/queries";
-import { getErrorMessage } from "@/domain/models";
+import type { Product } from '@/domain/models/product';
+import type { INotifier } from '@/domain/services/notifier';
+import type { ProductsQueryManager } from '@/domain/services/queries';
+import { getErrorMessage } from '@/domain/models';
 
 export type ProductDTO = {
   name: string;

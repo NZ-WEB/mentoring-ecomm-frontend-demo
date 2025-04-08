@@ -1,16 +1,16 @@
-import { useQueryClient } from "@tanstack/vue-query";
+import { useQueryClient } from '@tanstack/vue-query';
 import {
   getProductControllerFindAllQueryKey,
   getProductControllerFindOneQueryKey,
   useProductControllerCreate,
-} from "@/api/products/products";
-import type { Product } from "@/domain/models/product";
+} from '@/api/products/products';
+import type { Product } from '@/domain/models/product';
 import {
   createProduct,
   type ProductDTO,
-} from "@/domain/useCases/product/createProduct";
-import type { CreateProductDependencies } from "@/domain/useCases/product/createProduct";
-import { sonnerNotifier } from "@/infrostruct/notifier/sonnerNotirier";
+} from '@/domain/useCases/product/createProduct';
+import type { CreateProductDependencies } from '@/domain/useCases/product/createProduct';
+import { sonnerNotifier } from '@/infrostruct/notifier/sonnerNotirier';
 
 export function useCreateProductAdapter() {
   const queryClient = useQueryClient();
