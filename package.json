@@ -19,6 +19,7 @@
     "@formkit/auto-animate": "^0.8.2",
     "@tailwindcss/vite": "^4.1.2",
     "@tanstack/vue-query": "^5.71.10",
+    "@tanstack/vue-query-devtools": "^5.72.1",
     "@vee-validate/zod": "^4.15.0",
     "@vueuse/core": "^13.0.0",
     "axios": "^1.8.4",
