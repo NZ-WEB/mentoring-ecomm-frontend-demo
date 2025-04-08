@@ -26,9 +26,9 @@
  * Форма создания товара
  */
 
-import { Button } from '@/components/ui/button';
-import { X, ShoppingCart } from 'lucide-vue-next';
-import { Card, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from "@/components/ui/button";
+import { X, ShoppingCart } from "lucide-vue-next";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 
 import {
   Dialog,
@@ -38,7 +38,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
+} from "@/components/ui/dialog";
 
 import {
   NumberField,
@@ -46,7 +46,7 @@ import {
   NumberFieldDecrement,
   NumberFieldIncrement,
   NumberFieldInput,
-} from '@/components/ui/number-field';
+} from "@/components/ui/number-field";
 
 import {
   FormControl,
@@ -54,41 +54,41 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import {
   getProductControllerFindAllQueryKey,
   useProductControllerFindAll,
   useProductControllerRemove,
-} from './api/products/products.ts';
+} from "./api/products/products.ts";
 
-import { Gap } from '@/components/ui/Gap';
-import { Textarea } from '@/components/ui/textarea';
-import { toTypedSchema } from '@vee-validate/zod';
-import { useForm } from 'vee-validate';
-import { watch, ref } from 'vue';
+import { Gap } from "@/components/ui/Gap";
+import { Textarea } from "@/components/ui/textarea";
+import { toTypedSchema } from "@vee-validate/zod";
+import { useForm } from "vee-validate";
+import { watch, ref } from "vue";
 
-import { Toaster } from 'vue-sonner';
-import * as z from 'zod';
-import { useQueryClient } from '@tanstack/vue-query';
-import type { CartResponseDto, ProductListResponseDto } from '@/api/model';
+import { Toaster } from "vue-sonner";
+import * as z from "zod";
+import { useQueryClient } from "@tanstack/vue-query";
+import type { CartResponseDto, ProductListResponseDto } from "@/api/model";
 import {
   getCartControllerGetCartQueryKey,
   useCartControllerAddToCart,
   useCartControllerGetCart,
   useCartControllerRemoveFromCart,
   useCartControllerUpdateCartItem,
-} from '@/api/cart/cart.ts';
-import { Badge } from '@/components/ui/badge';
-import { APP_CONFIG } from '@/config';
-import { useCreateProductWithProviders } from './infrostruct/service';
+} from "@/api/cart/cart.ts";
+import { Badge } from "@/components/ui/badge";
+import { APP_CONFIG } from "@/config";
+import { useCreateProductAdapter } from "./infrostruct/service";
 
 const USER_ID = APP_CONFIG.USER_ID;
 const { data: products } = useProductControllerFindAll();
 const queryClient = useQueryClient();
 
-const { create: createProduct, response: createProductResponse } =
-  useCreateProductWithProviders();
+const { create: createProduct, data: createProductResponse } =
+  useCreateProductAdapter();
 
 watch(createProductResponse, () => {
   isCreateModalOpen.value = false;
@@ -155,7 +155,7 @@ watch(
 );
 
 const handleRemoveFromCart = (productId: number) => {
-  if (!cartData.value) throw new Error('Cart does not exist');
+  if (!cartData.value) throw new Error("Cart does not exist");
 
   const itemId = cartData.value.items.find(
     (item) => item.productId === productId,
@@ -175,7 +175,7 @@ const handleRemoveFromCart = (productId: number) => {
 };
 
 const handleUpdateCartQuantity = (productId: number, quantity: number) => {
-  if (!cartData.value) throw new Error('Cart does not exist');
+  if (!cartData.value) throw new Error("Cart does not exist");
 
   const itemId = cartData.value.items.find(
     (item) => item.productId === productId,
