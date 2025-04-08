@@ -1,31 +1,35 @@
-import {
-  useCreateProduct,
-  type CreateProductProviders,
-} from '@/domain/useCases/product/createProduct';
 import { useQueryClient } from '@tanstack/vue-query';
-import { sonnerNotifier } from '../notifier/sonnerNotirier';
 import {
   getProductControllerFindAllQueryKey,
   getProductControllerFindOneQueryKey,
   useProductControllerCreate,
 } from '@/api/products/products';
 import type { Product } from '@/domain/models/product';
-import { mapToCreateProductMutation } from '@/api/mappers';
+import {
+  createProduct,
+  type ProductDTO,
+} from '@/domain/useCases/product/createProduct';
+import type { CreateProductDependencies } from '@/domain/useCases/product/createProduct';
+import { sonnerNotifier } from '@/infrostruct/notifier/sonnerNotirier';
 
-export function useCreateProductWithProviders() {
+export function useCreateProductAdapter() {
   const queryClient = useQueryClient();
 
-  const providers: CreateProductProviders = {
+  const { mutateAsync, isPending, data } = useProductControllerCreate();
+
+  const dependencies: CreateProductDependencies = {
     notifier: sonnerNotifier,
     productsQueryManager: {
-      invalidateProductQuery: (pId: number) =>
+      invalidateProductQuery: (productId: number) => {
         queryClient.invalidateQueries({
-          queryKey: getProductControllerFindOneQueryKey(pId),
-        }),
-      invalidateProductsQuery: () =>
+          queryKey: getProductControllerFindOneQueryKey(productId),
+        });
+      },
+      invalidateProductsQuery: () => {
         queryClient.invalidateQueries({
           queryKey: getProductControllerFindAllQueryKey(),
-        }),
+        });
+      },
       setProductQueryData: (
         id: number,
         cb: (productData: Product) => Product,
@@ -36,10 +40,15 @@ export function useCreateProductWithProviders() {
         queryClient.setQueryData(getProductControllerFindAllQueryKey(), cb);
       },
     },
-    createProductMutation: mapToCreateProductMutation(
-      useProductControllerCreate(),
-    ),
+    createProductApi: mutateAsync,
   };
 
-  return useCreateProduct(providers);
+  const create = (data: { data: ProductDTO }) =>
+    createProduct(data, dependencies);
+
+  return {
+    create,
+    isPending,
+    data,
+  };
 }

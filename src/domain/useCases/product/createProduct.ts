@@ -1,22 +1,7 @@
-import { type UseMutationReturnType } from '@tanstack/vue-query';
-import { watch } from 'vue';
-import type { ErrorType } from '@/domain/models';
 import type { Product } from '@/domain/models/product';
 import type { INotifier } from '@/domain/services/notifier';
 import type { ProductsQueryManager } from '@/domain/services/queries';
-
-export type CreateProductMutation = UseMutationReturnType<
-  Product,
-  ErrorType,
-  { data: ProductDTO },
-  Product
->;
-
-export interface CreateProductProviders {
-  notifier: INotifier;
-  createProductMutation: CreateProductMutation;
-  productsQueryManager: ProductsQueryManager;
-}
+import { getErrorMessage } from '@/domain/models';
 
 export type ProductDTO = {
   name: string;
@@ -26,28 +11,22 @@ export type ProductDTO = {
   stock: number;
   category?: string;
 };
-export function useCreateProduct(providers: CreateProductProviders) {
-  const { notifier, createProductMutation, productsQueryManager } = providers;
 
-  watch(
-    () => createProductMutation.error.value,
-    (newError) => {
-      if (newError) {
-        notifier.notify(newError.message);
-      }
-    },
-  );
-
-  watch(
-    () => createProductMutation.data.value,
-    () => {
-      productsQueryManager.invalidateProductsQuery();
-    },
-  );
-
-  return {
-    create: createProductMutation.mutate,
-    isPending: createProductMutation.isPending,
-    response: createProductMutation.data,
-  };
+export interface CreateProductDependencies {
+  notifier: INotifier;
+  productsQueryManager: ProductsQueryManager;
+  createProductApi: (data: { data: ProductDTO }) => Promise<Product>;
 }
+
+export const createProduct = async (
+  data: { data: ProductDTO },
+  deps: CreateProductDependencies,
+) => {
+  try {
+    await deps.createProductApi(data);
+    deps.productsQueryManager.invalidateProductsQuery();
+  } catch (error) {
+    const errorMessage = getErrorMessage(error);
+    deps.notifier.notify(errorMessage);
+  }
+};

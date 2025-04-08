@@ -3,7 +3,7 @@ import * as z from 'zod';
 import { toTypedSchema } from '@vee-validate/zod';
 import { useForm } from 'vee-validate';
 import { watch, ref } from 'vue';
-import { useCreateProductWithProviders } from '@/infrostruct/service';
+import { useCreateProductAdapter } from '@/infrostruct/service';
 import { Button } from '@/components/ui/button';
 
 import {
@@ -49,8 +49,8 @@ const onSubmit = handleSubmit((data) => {
   });
 });
 
-const { create: createProduct, response: createProductResponse } =
-  useCreateProductWithProviders();
+const { create: createProduct, data: createProductResponse } =
+  useCreateProductAdapter();
 
 watch(createProductResponse, () => {
   isCreateModalOpen.value = false;
