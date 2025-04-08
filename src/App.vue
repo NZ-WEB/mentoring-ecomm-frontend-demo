@@ -25,13 +25,14 @@
  *
  * Форма создания товара
  */
-import { ShoppingCart } from 'lucide-vue-next';
-import { ProductCreateDialog } from '@/components/ui/dialog';
-import { Toaster } from 'vue-sonner';
-import { Badge } from '@/components/ui/badge';
-import { ProductList } from '@/components/product';
-import { APP_CONFIG } from '@/config';
-import { useCartControllerGetCart } from '@/api/cart/cart.ts';
+import { ShoppingCart } from "lucide-vue-next";
+import { ProductCreateDialog } from "@/components/ui/dialog";
+import { Toaster } from "vue-sonner";
+import { Badge } from "@/components/ui/badge";
+import { ProductList } from "@/components/product";
+import { APP_CONFIG } from "@/config";
+import { useCartControllerGetCart } from "@/api/cart/cart.ts";
+import { VueQueryDevtools } from "@tanstack/vue-query-devtools";
 
 const USER_ID = APP_CONFIG.USER_ID;
 const { data: cartData } = useCartControllerGetCart({ userId: USER_ID });
@@ -50,4 +51,5 @@ const { data: cartData } = useCartControllerGetCart({ userId: USER_ID });
     <ProductList v-if="cartData" :cart-data="cartData" />
   </div>
   <Toaster />
+  <VueQueryDevtools />
 </template>
