@@ -4,6 +4,8 @@ import { X } from 'lucide-vue-next';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 import { watch } from 'vue';
 import { ProductCardActions } from '@/components/product';
+import { APP_CONFIG } from '@/config';
+import { useCartControllerGetCart } from '@/api/cart/cart.ts';
 
 import {
   getProductControllerFindAllQueryKey,
@@ -11,17 +13,15 @@ import {
 } from '@/api/products/products.ts';
 
 import { useQueryClient } from '@tanstack/vue-query';
-import type {
-  CartResponseDto,
-  ProductListResponseDto,
-  ProductResponseDto,
-} from '@/api/model';
+import type { ProductListResponseDto } from '@/api/model';
+import type { Product } from '@/domain/models';
 
 defineProps<{
-  cartData: CartResponseDto;
-  product: ProductResponseDto;
+  product: Product;
 }>();
 
+const USER_ID = APP_CONFIG.USER_ID;
+const { data: cartData } = useCartControllerGetCart({ userId: USER_ID });
 const queryClient = useQueryClient();
 
 const { mutate: deleteProduct, data: removeResponse } =
