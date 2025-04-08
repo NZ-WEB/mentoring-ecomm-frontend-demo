@@ -26,7 +26,7 @@
  * Форма создания товара
  */
 import { ShoppingCart } from 'lucide-vue-next';
-import { OpenProductDialog } from '@/components/ui/dialog';
+import { ProductDialogOpen } from '@/components/ui/dialog';
 import { Toaster } from 'vue-sonner';
 import { Badge } from '@/components/ui/badge';
 import { ProductList } from '@/components/ui/card';
@@ -41,7 +41,7 @@ const { data: cartData } = useCartControllerGetCart({ userId: USER_ID });
   <div class="p-4">
     <div class="flex items-center gap-2 mb-4">
       <h1>Товары</h1>
-      <OpenProductDialog />
+      <ProductDialogOpen />
       <Badge v-if="cartData" class="h-6 rounded-2xl">
         <ShoppingCart />
         {{ cartData.items?.reduce((acc, item) => (acc += item.quantity), 0) }}
