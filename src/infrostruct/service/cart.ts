@@ -34,7 +34,7 @@ export function useAddProductToCartAdapter() {
         );
       },
     },
-    addToCartApi: mutateAsync,
+    addProductToCartApi: mutateAsync,
   };
 
   const create = (data: { data: AddToCartDto }) =>

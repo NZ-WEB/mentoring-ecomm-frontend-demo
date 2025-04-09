@@ -11,7 +11,9 @@ export interface AddToCartDto {
 export interface AddProductToCartDependencies {
   notifier: INotifier;
   cartQueryManager: CartQueryManager;
-  addToCartApi: (data: { data: AddToCartDto }) => Promise<CartResponseDto>;
+  addProductToCartApi: (data: {
+    data: AddToCartDto;
+  }) => Promise<CartResponseDto>;
 }
 
 export type CartItemDtoProduct = { [key: string]: unknown };
@@ -36,7 +38,7 @@ export const addProductToCart = async (
   deps: AddProductToCartDependencies,
 ) => {
   try {
-    const result = await deps.addToCartApi(data);
+    const result = await deps.addProductToCartApi(data);
     deps.cartQueryManager.invalidateCartQuery(result.id);
   } catch (error) {
     const errorMessage = getErrorMessage(error);
