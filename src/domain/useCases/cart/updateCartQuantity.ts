@@ -22,12 +22,14 @@ export interface UpdateCartQuantityResponse {
   itemsCount: number;
 }
 
+export type UpdateCartQuantityApiFn = (
+  dto: UpdateCartQuantityDTO,
+) => Promise<UpdateCartQuantityResponse>;
+
 export interface UpdateCartQuantityDependencies {
   notifier: INotifier;
   cartQueryManager: CartQueryManager;
-  updateCartQuantityApi: (
-    dto: UpdateCartQuantityDTO,
-  ) => Promise<UpdateCartQuantityResponse>;
+  updateCartQuantityApi: UpdateCartQuantityApiFn;
 }
 
 export async function updateCartQuantity(
