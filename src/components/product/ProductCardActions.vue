@@ -15,12 +15,12 @@ import {
 import {
   useCartControllerAddToCart,
   useCartControllerRemoveFromCart,
-  useCartControllerUpdateCartItem,
 } from '@/api/cart/cart.ts';
 
 import { APP_CONFIG } from '@/config';
 import { useQueryClient } from '@tanstack/vue-query';
 import { useCartControllerGetCart } from '@/api/cart/cart.ts';
+import { useUpdateCartQuantityAdapter } from '@/infrostruct/service';
 
 const queryClient = useQueryClient();
 const USER_ID = APP_CONFIG.USER_ID;
@@ -38,8 +38,7 @@ const { mutate: addToCard, data: addToCardResponse } =
 
 const { mutate: removeFromCart, data: removeFromCartResponse } =
   useCartControllerRemoveFromCart();
-const { mutate: updateCartQuantity, data: updateCartQuantityResponse } =
-  useCartControllerUpdateCartItem();
+const { update: updateCartQuantity } = useUpdateCartQuantityAdapter();
 
 const handleAddToCart = (productId: number) => {
   addToCard({
@@ -92,11 +91,9 @@ const handleUpdateCartQuantity = (productId: number, quantity: number) => {
     );
 
   updateCartQuantity({
-    data: {
-      itemId: itemId.id,
-      cartId: cartData.value.id,
-      quantity: quantity,
-    },
+    itemId: itemId.id,
+    cartId: cartData.value.id,
+    quantity: quantity,
   });
 };
 
@@ -106,12 +103,9 @@ function invalidateCart() {
   });
 }
 
-watch(
-  [removeFromCartResponse, updateCartQuantityResponse, addToCardResponse],
-  () => {
-    invalidateCart();
-  },
-);
+watch([removeFromCartResponse, addToCardResponse], () => {
+  invalidateCart();
+});
 </script>
 <template>
   <Button
