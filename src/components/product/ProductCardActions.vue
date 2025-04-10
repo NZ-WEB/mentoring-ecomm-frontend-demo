@@ -33,9 +33,7 @@ defineProps<{
   productId: number;
 }>();
 
-const { create: addToCard, data: addToCardResponse } =
-  useAddProductToCartAdapter();
-
+const { add: addToCard } = useAddProductToCartAdapter();
 const { mutate: removeFromCart, data: removeFromCartResponse } =
   useCartControllerRemoveFromCart();
 const { mutate: updateCartQuantity, data: updateCartQuantityResponse } =
@@ -106,12 +104,9 @@ function invalidateCart() {
   });
 }
 
-watch(
-  [removeFromCartResponse, updateCartQuantityResponse, addToCardResponse],
-  () => {
-    invalidateCart();
-  },
-);
+watch([removeFromCartResponse, updateCartQuantityResponse], () => {
+  invalidateCart();
+});
 </script>
 <template>
   <Button

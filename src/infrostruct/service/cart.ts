@@ -37,11 +37,11 @@ export function useAddProductToCartAdapter() {
     addProductToCartApi: mutateAsync,
   };
 
-  const create = (data: { data: AddToCartDto }) =>
+  const add = (data: { data: AddToCartDto }) =>
     addProductToCart(data, dependencies);
 
   return {
-    create,
+    add,
     isPending,
     data,
   };
