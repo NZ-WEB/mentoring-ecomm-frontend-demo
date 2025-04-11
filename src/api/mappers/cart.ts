@@ -6,11 +6,13 @@ export function mappToCartData(dto: CartResponseDto): CartData {
   return {
     ...dto,
     userId: APP_CONFIG.USER_ID,
-    items: dto.items.map((item) => {
-      return {
-        ...item,
-        product: item.product as Product,
-      };
-    }),
+    items: dto?.items?.length
+      ? dto.items.map((item) => {
+          return {
+            ...item,
+            product: item.product as Product,
+          };
+        })
+      : [],
   };
 }
