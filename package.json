@@ -13,7 +13,7 @@
     "test": "vitest run",
     "coverage": "vitest run --coverage",
     "test:watch": "vitest",
-    "lint:markup": "vue-tsc -b"
+    "lint:markup": "vue-tsc -b --noEmit"
   },
   "dependencies": {
     "@formkit/auto-animate": "^0.8.2",
