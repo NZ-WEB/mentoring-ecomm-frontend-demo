@@ -1,6 +1,6 @@
-import { getErrorMessage } from '@/domain/models';
-import type { INotifier } from '@/domain/services/notifier';
-import type { CartQueryManager } from '@/domain/services/queries';
+import { getErrorMessage } from "@/domain/models";
+import type { INotifier } from "@/domain/services/notifier";
+import type { CartQueryManager } from "@/domain/services/queries";
 
 export interface AddToCartDto {
   userId: number;
@@ -39,7 +39,7 @@ export const addProductToCart = async (
 ) => {
   try {
     const result = await deps.addProductToCartApi(data);
-    deps.cartQueryManager.invalidateCartQuery(result.id);
+    deps.cartQueryManager.invalidateCartQuery(result.userId);
   } catch (error) {
     const errorMessage = getErrorMessage(error);
     deps.notifier.notify(errorMessage);
