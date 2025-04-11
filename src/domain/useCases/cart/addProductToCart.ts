@@ -8,12 +8,12 @@ export interface AddToCartDto {
   quantity?: number;
 }
 
-type CartResponseDto = CartData;
+type AddToCartResponseDto = CartData;
 
 export interface AddProductToCartDependencies {
   notifier: INotifier;
   cartQueryManager: CartQueryManager;
-  addProductToCartApi: (data: { data: AddToCartDto }) => Promise<CartResponseDto>;
+  addProductToCartApi: (data: { data: AddToCartDto }) => Promise<AddToCartResponseDto>;
 }
 
 export type CartItemDtoProduct = { [key: string]: unknown };

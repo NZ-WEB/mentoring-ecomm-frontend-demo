@@ -16,11 +16,8 @@ import { useCartControllerRemoveFromCart } from '@/api/cart/cart.ts';
 
 import { APP_CONFIG } from '@/config';
 import { useQueryClient } from '@tanstack/vue-query';
-import {
-  useUpdateCartQuantityAdapter,
-  useAddProductToCartAdapter,
-  cartQueries,
-} from '@/infrostruct/service';
+import { useUpdateCartQuantityAdapter, useAddProductToCartAdapter } from '@/infrostruct/service';
+import { cartQueries } from '@/infrostruct/service/query';
 
 const queryClient = useQueryClient();
 const USER_ID = APP_CONFIG.USER_ID;
@@ -96,7 +93,7 @@ watch([removeFromCartResponse], () => {
 </script>
 <template>
   <Button
-    v-if="!cartData.items?.find((i) => i.productId === productId)?.quantity"
+    v-if="!cartData?.items?.find((i) => i.productId === productId)?.quantity"
     class="mb-0 mt-auto"
     @click="handleAddToCart(productId)"
   >
