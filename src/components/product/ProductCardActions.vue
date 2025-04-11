@@ -12,15 +12,15 @@ import {
   NumberFieldInput,
 } from '@/components/ui/number-field';
 
-import {
-  useCartControllerAddToCart,
-  useCartControllerRemoveFromCart,
-} from '@/api/cart/cart.ts';
+import { useCartControllerRemoveFromCart } from '@/api/cart/cart.ts';
 
 import { APP_CONFIG } from '@/config';
 import { useQueryClient } from '@tanstack/vue-query';
 import { useCartControllerGetCart } from '@/api/cart/cart.ts';
-import { useUpdateCartQuantityAdapter } from '@/infrostruct/service';
+import {
+  useUpdateCartQuantityAdapter,
+  useAddProductToCartAdapter,
+} from '@/infrostruct/service';
 
 const queryClient = useQueryClient();
 const USER_ID = APP_CONFIG.USER_ID;
@@ -33,9 +33,7 @@ defineProps<{
   productId: number;
 }>();
 
-const { mutate: addToCard, data: addToCardResponse } =
-  useCartControllerAddToCart();
-
+const { add: addToCard } = useAddProductToCartAdapter();
 const { mutate: removeFromCart, data: removeFromCartResponse } =
   useCartControllerRemoveFromCart();
 const { update: updateCartQuantity } = useUpdateCartQuantityAdapter();
@@ -103,7 +101,7 @@ function invalidateCart() {
   });
 }
 
-watch([removeFromCartResponse, addToCardResponse], () => {
+watch([removeFromCartResponse], () => {
   invalidateCart();
 });
 </script>

@@ -3,14 +3,14 @@ import {
   type UpdateCartQuantityDependencies,
   type UpdateCartQuantityDTO,
 } from '@/domain/useCases/cart';
-import { sonnerNotifier } from '../notifier/sonnerNotirier';
+import { sonnerNotifier } from '../../notifier/sonnerNotirier.ts';
 import { useQueryClient } from '@tanstack/vue-query';
 import {
   getCartControllerGetCartQueryKey,
   useCartControllerUpdateCartItem,
-} from '@/api/cart/cart';
+} from '@/api/cart/cart.ts';
 import type { CartData } from '@/domain/models';
-import { APP_CONFIG } from '@/config';
+import { APP_CONFIG } from '@/config.ts';
 
 export function useUpdateCartQuantityAdapter() {
   const queryClient = useQueryClient();
