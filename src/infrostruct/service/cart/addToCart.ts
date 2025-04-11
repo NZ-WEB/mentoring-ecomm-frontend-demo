@@ -1,16 +1,16 @@
-import { useQueryClient } from "@tanstack/vue-query";
-import { sonnerNotifier } from "@/infrostruct/notifier/sonnerNotirier.ts";
+import { useQueryClient } from '@tanstack/vue-query';
+import { sonnerNotifier } from '@/infrostruct/notifier/sonnerNotirier.ts';
 import {
   getCartControllerGetCartQueryKey,
   useCartControllerAddToCart,
-} from "@/api/cart/cart.ts";
+} from '@/api/cart/cart.ts';
 import {
   addProductToCart,
   type AddProductToCartDependencies,
-} from "@/domain/useCases/cart/addProductToCart.ts";
-import type { CartData } from "@/domain/models";
-import type { AddToCartDto } from "@/api/model";
-import { APP_CONFIG } from "@/config.ts";
+} from '@/domain/useCases/cart/addProductToCart.ts';
+import type { CartData } from '@/domain/models';
+import type { AddToCartDto } from '@/api/model';
+import { APP_CONFIG } from '@/config.ts';
 
 export function useAddProductToCartAdapter() {
   const queryClient = useQueryClient();

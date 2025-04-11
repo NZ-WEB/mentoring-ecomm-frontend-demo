@@ -1,6 +1,6 @@
-import { getErrorMessage } from "@/domain/models";
-import type { INotifier } from "@/domain/services/notifier";
-import type { CartQueryManager } from "@/domain/services/queries";
+import { getErrorMessage } from '@/domain/models';
+import type { INotifier } from '@/domain/services/notifier';
+import type { CartQueryManager } from '@/domain/services/queries';
 
 export interface AddToCartDto {
   userId: number;
