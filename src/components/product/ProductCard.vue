@@ -19,8 +19,7 @@ defineProps<{
 }>();
 
 const queryClient = useQueryClient();
-const { mutate: deleteProduct, data: removeResponse } =
-  useProductControllerRemove();
+const { mutate: deleteProduct, data: removeResponse } = useProductControllerRemove();
 
 const handleDeleteProduct = (productId: number) => {
   deleteProduct({

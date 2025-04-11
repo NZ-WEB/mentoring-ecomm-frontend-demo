@@ -5,9 +5,7 @@ import { Plus } from 'lucide-vue-next';
 import { NumberFieldIncrement, useForwardProps } from 'reka-ui';
 import { computed, type HTMLAttributes } from 'vue';
 
-const props = defineProps<
-  NumberFieldIncrementProps & { class?: HTMLAttributes['class'] }
->();
+const props = defineProps<NumberFieldIncrementProps & { class?: HTMLAttributes['class'] }>();
 
 const delegatedProps = computed(() => {
   const { class: _, ...delegated } = props;

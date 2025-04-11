@@ -3,12 +3,7 @@ import type { HTMLAttributes } from 'vue';
 import { cn } from '@/lib/utils';
 import { reactiveOmit } from '@vueuse/core';
 import { ChevronDown } from 'lucide-vue-next';
-import {
-  SelectIcon,
-  SelectTrigger,
-  type SelectTriggerProps,
-  useForwardProps,
-} from 'reka-ui';
+import { SelectIcon, SelectTrigger, type SelectTriggerProps, useForwardProps } from 'reka-ui';
 
 const props = withDefaults(
   defineProps<

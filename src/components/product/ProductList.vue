@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import type { CartResponseDto } from '@/api/model';
-import { useProductControllerFindAll } from '@/api/products/products.ts';
 import { ProductCard } from '@/components/product';
+import { productQueries } from '@/infrostruct/service';
 
 defineProps<{
   cartData: CartResponseDto;
 }>();
 
-const { data: products } = useProductControllerFindAll();
+const { data: products } = productQueries.getProductList();
 </script>
 
 <template>

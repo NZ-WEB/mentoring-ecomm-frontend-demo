@@ -16,13 +16,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 
 import { Gap } from '@/components/ui/Gap';
@@ -49,8 +43,7 @@ const onSubmit = handleSubmit((data) => {
   });
 });
 
-const { create: createProduct, data: createProductResponse } =
-  useCreateProductAdapter();
+const { create: createProduct, data: createProductResponse } = useCreateProductAdapter();
 
 watch(createProductResponse, () => {
   isCreateModalOpen.value = false;
@@ -72,11 +65,7 @@ const isCreateModalOpen = ref(false);
         </DialogDescription>
       </DialogHeader>
       <form class="max-h-[70vh] overflow-scroll" @submit="onSubmit">
-        <FormField
-          v-slot="{ componentField }"
-          name="name"
-          :validate-on-blur="!isFieldDirty"
-        >
+        <FormField v-slot="{ componentField }" name="name" :validate-on-blur="!isFieldDirty">
           <FormItem v-auto-animate>
             <FormLabel>Название товара</FormLabel>
             <FormControl>
@@ -88,11 +77,7 @@ const isCreateModalOpen = ref(false);
 
         <Gap size="sm" />
 
-        <FormField
-          v-slot="{ componentField }"
-          name="description"
-          :validate-on-blur="!isFieldDirty"
-        >
+        <FormField v-slot="{ componentField }" name="description" :validate-on-blur="!isFieldDirty">
           <FormItem v-auto-animate>
             <FormLabel>Описание товара</FormLabel>
             <FormControl>
@@ -104,11 +89,7 @@ const isCreateModalOpen = ref(false);
 
         <Gap size="sm" />
 
-        <FormField
-          v-slot="{ componentField }"
-          name="price"
-          :validate-on-blur="!isFieldDirty"
-        >
+        <FormField v-slot="{ componentField }" name="price" :validate-on-blur="!isFieldDirty">
           <FormItem v-auto-animate>
             <FormLabel>Цена</FormLabel>
             <FormControl>
@@ -120,11 +101,7 @@ const isCreateModalOpen = ref(false);
 
         <Gap size="sm" />
 
-        <FormField
-          v-slot="{ componentField }"
-          name="imageUrl"
-          :validate-on-blur="!isFieldDirty"
-        >
+        <FormField v-slot="{ componentField }" name="imageUrl" :validate-on-blur="!isFieldDirty">
           <FormItem v-auto-animate>
             <FormLabel>Изображение</FormLabel>
             <FormControl>
@@ -136,11 +113,7 @@ const isCreateModalOpen = ref(false);
 
         <Gap size="sm" />
 
-        <FormField
-          v-slot="{ componentField }"
-          name="stock"
-          :validate-on-blur="!isFieldDirty"
-        >
+        <FormField v-slot="{ componentField }" name="stock" :validate-on-blur="!isFieldDirty">
           <FormItem v-auto-animate>
             <FormLabel>Осталось товаров</FormLabel>
             <FormControl>
@@ -152,11 +125,7 @@ const isCreateModalOpen = ref(false);
 
         <Gap size="sm" />
 
-        <FormField
-          v-slot="{ componentField }"
-          name="category"
-          :validate-on-blur="!isFieldDirty"
-        >
+        <FormField v-slot="{ componentField }" name="category" :validate-on-blur="!isFieldDirty">
           <FormItem v-auto-animate>
             <FormLabel>Категория</FormLabel>
             <FormControl>
