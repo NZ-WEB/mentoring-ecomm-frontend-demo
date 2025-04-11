@@ -10,7 +10,7 @@ import {
   useCartControllerUpdateCartItem,
 } from '@/api/cart/cart.ts';
 import type { CartData } from '@/domain/models';
-import { APP_CONFIG } from '@/config.ts';
+import { mappToCartData } from '@/api/mappers';
 
 export function useUpdateCartQuantityAdapter() {
   const queryClient = useQueryClient();
@@ -25,25 +25,16 @@ export function useUpdateCartQuantityAdapter() {
           queryKey: getCartControllerGetCartQueryKey({ userId }),
         });
       },
-      setCartQueryData: (
-        userId: number,
-        cb: (cartData: CartData) => CartData,
-      ) => {
-        queryClient.setQueryData(
-          getCartControllerGetCartQueryKey({ userId }),
-          cb,
-        );
+      setCartQueryData: (userId: number, cb: (cartData: CartData) => CartData) => {
+        queryClient.setQueryData(getCartControllerGetCartQueryKey({ userId }), cb);
       },
     },
-    updateCartQuantityApi: async (data: UpdateCartQuantityDTO) => {
-      const res = await mutateAsync({ data } as {
-        data: UpdateCartQuantityDTO;
-      });
-      return {
-        ...res,
-        userId: APP_CONFIG.USER_ID,
-      };
-    },
+    updateCartQuantityApi: async (data: UpdateCartQuantityDTO) =>
+      mappToCartData(
+        await mutateAsync({ data } as {
+          data: UpdateCartQuantityDTO;
+        }),
+      ),
   };
 
   const update = (dto: UpdateCartQuantityDTO) => updateCartQuantity(dto, deps);

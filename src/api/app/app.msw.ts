@@ -10,9 +10,7 @@ import { HttpResponse, delay, http } from 'msw';
 export const getAppControllerGetHelloMockHandler = (
   overrideResponse?:
     | void
-    | ((
-        info: Parameters<Parameters<typeof http.get>[1]>[0],
-      ) => Promise<void> | void),
+    | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<void> | void),
 ) => {
   return http.get('*/', async (info) => {
     await delay(1000);

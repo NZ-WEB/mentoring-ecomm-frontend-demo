@@ -1,4 +1,4 @@
-import { getErrorMessage } from '@/domain/models';
+import { getErrorMessage, type CartData } from '@/domain/models';
 import type { INotifier } from '@/domain/services/notifier';
 import type { CartQueryManager } from '@/domain/services/queries';
 
@@ -8,12 +8,12 @@ export interface AddToCartDto {
   quantity?: number;
 }
 
+type CartResponseDto = CartData;
+
 export interface AddProductToCartDependencies {
   notifier: INotifier;
   cartQueryManager: CartQueryManager;
-  addProductToCartApi: (data: {
-    data: AddToCartDto;
-  }) => Promise<CartResponseDto>;
+  addProductToCartApi: (data: { data: AddToCartDto }) => Promise<CartResponseDto>;
 }
 
 export type CartItemDtoProduct = { [key: string]: unknown };
@@ -23,14 +23,6 @@ export interface CartItemDto {
   productId: number;
   quantity: number;
   product: CartItemDtoProduct;
-}
-
-export interface CartResponseDto {
-  id: number;
-  userId: number;
-  items: CartItemDto[];
-  total: number;
-  itemsCount: number;
 }
 
 export const addProductToCart = async (

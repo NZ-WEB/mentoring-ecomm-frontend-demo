@@ -38,11 +38,7 @@ export const getAppControllerGetHelloQueryOptions = <
   TError = ErrorType<unknown>,
 >(options?: {
   query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof appControllerGetHello>>,
-      TError,
-      TData
-    >
+    UseQueryOptions<Awaited<ReturnType<typeof appControllerGetHello>>, TError, TData>
   >;
   request?: SecondParameter<typeof customInstance>;
 }) => {
@@ -50,9 +46,8 @@ export const getAppControllerGetHelloQueryOptions = <
 
   const queryKey = getAppControllerGetHelloQueryKey();
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof appControllerGetHello>>
-  > = ({ signal }) => appControllerGetHello(requestOptions, signal);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof appControllerGetHello>>> = ({ signal }) =>
+    appControllerGetHello(requestOptions, signal);
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
     Awaited<ReturnType<typeof appControllerGetHello>>,
@@ -72,11 +67,7 @@ export function useAppControllerGetHello<
 >(
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof appControllerGetHello>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof appControllerGetHello>>, TError, TData>
     >;
     request?: SecondParameter<typeof customInstance>;
   },
@@ -86,16 +77,11 @@ export function useAppControllerGetHello<
 } {
   const queryOptions = getAppControllerGetHelloQueryOptions(options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryReturnType<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions, queryClient) as UseQueryReturnType<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 
-  query.queryKey = unref(queryOptions).queryKey as DataTag<
-    QueryKey,
-    TData,
-    TError
-  >;
+  query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData, TError>;
 
   return query;
 }

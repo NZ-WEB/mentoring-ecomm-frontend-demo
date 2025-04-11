@@ -55,9 +55,7 @@ export const cartControllerGetCart = (
   );
 };
 
-export const getCartControllerGetCartQueryKey = (
-  params: MaybeRef<CartControllerGetCartParams>,
-) => {
+export const getCartControllerGetCartQueryKey = (params: MaybeRef<CartControllerGetCartParams>) => {
   return ['cart', ...(params ? [params] : [])] as const;
 };
 
@@ -68,11 +66,7 @@ export const getCartControllerGetCartQueryOptions = <
   params: MaybeRef<CartControllerGetCartParams>,
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof cartControllerGetCart>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof cartControllerGetCart>>, TError, TData>
     >;
     request?: SecondParameter<typeof customInstance>;
   },
@@ -81,9 +75,8 @@ export const getCartControllerGetCartQueryOptions = <
 
   const queryKey = getCartControllerGetCartQueryKey(params);
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof cartControllerGetCart>>
-  > = ({ signal }) => cartControllerGetCart(params, requestOptions, signal);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof cartControllerGetCart>>> = ({ signal }) =>
+    cartControllerGetCart(params, requestOptions, signal);
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
     Awaited<ReturnType<typeof cartControllerGetCart>>,
@@ -108,11 +101,7 @@ export function useCartControllerGetCart<
   params: MaybeRef<CartControllerGetCartParams>,
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof cartControllerGetCart>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof cartControllerGetCart>>, TError, TData>
     >;
     request?: SecondParameter<typeof customInstance>;
   },
@@ -122,16 +111,11 @@ export function useCartControllerGetCart<
 } {
   const queryOptions = getCartControllerGetCartQueryOptions(params, options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryReturnType<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions, queryClient) as UseQueryReturnType<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 
-  query.queryKey = unref(queryOptions).queryKey as DataTag<
-    QueryKey,
-    TData,
-    TError
-  >;
+  query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData, TError>;
 
   return query;
 }
@@ -178,9 +162,7 @@ export const getCartControllerAddToCartMutationOptions = <
 > => {
   const mutationKey = ['cartControllerAddToCart'];
   const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation &&
-      'mutationKey' in options.mutation &&
-      options.mutation.mutationKey
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey }, request: undefined };
@@ -206,10 +188,7 @@ export type CartControllerAddToCartMutationError = ErrorType<void>;
 /**
  * @summary Add item to cart
  */
-export const useCartControllerAddToCart = <
-  TError = ErrorType<void>,
-  TContext = unknown,
->(
+export const useCartControllerAddToCart = <TError = ErrorType<void>, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof cartControllerAddToCart>>,
@@ -270,9 +249,7 @@ export const getCartControllerUpdateCartItemMutationOptions = <
 > => {
   const mutationKey = ['cartControllerUpdateCartItem'];
   const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation &&
-      'mutationKey' in options.mutation &&
-      options.mutation.mutationKey
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey }, request: undefined };
@@ -292,17 +269,13 @@ export const getCartControllerUpdateCartItemMutationOptions = <
 export type CartControllerUpdateCartItemMutationResult = NonNullable<
   Awaited<ReturnType<typeof cartControllerUpdateCartItem>>
 >;
-export type CartControllerUpdateCartItemMutationBody =
-  BodyType<UpdateCartItemDto>;
+export type CartControllerUpdateCartItemMutationBody = BodyType<UpdateCartItemDto>;
 export type CartControllerUpdateCartItemMutationError = ErrorType<void>;
 
 /**
  * @summary Update cart item
  */
-export const useCartControllerUpdateCartItem = <
-  TError = ErrorType<void>,
-  TContext = unknown,
->(
+export const useCartControllerUpdateCartItem = <TError = ErrorType<void>, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof cartControllerUpdateCartItem>>,
@@ -319,8 +292,7 @@ export const useCartControllerUpdateCartItem = <
   { data: BodyType<UpdateCartItemDto> },
   TContext
 > => {
-  const mutationOptions =
-    getCartControllerUpdateCartItemMutationOptions(options);
+  const mutationOptions = getCartControllerUpdateCartItemMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -361,9 +333,7 @@ export const getCartControllerRemoveFromCartMutationOptions = <
 > => {
   const mutationKey = ['cartControllerRemoveFromCart'];
   const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation &&
-      'mutationKey' in options.mutation &&
-      options.mutation.mutationKey
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey }, request: undefined };
@@ -389,10 +359,7 @@ export type CartControllerRemoveFromCartMutationError = ErrorType<void>;
 /**
  * @summary Remove item from cart
  */
-export const useCartControllerRemoveFromCart = <
-  TError = ErrorType<void>,
-  TContext = unknown,
->(
+export const useCartControllerRemoveFromCart = <TError = ErrorType<void>, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof cartControllerRemoveFromCart>>,
@@ -409,8 +376,7 @@ export const useCartControllerRemoveFromCart = <
   { itemId: number; params: CartControllerRemoveFromCartParams },
   TContext
 > => {
-  const mutationOptions =
-    getCartControllerRemoveFromCartMutationOptions(options);
+  const mutationOptions = getCartControllerRemoveFromCartMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -449,9 +415,7 @@ export const getCartControllerClearCartMutationOptions = <
 > => {
   const mutationKey = ['cartControllerClearCart'];
   const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation &&
-      'mutationKey' in options.mutation &&
-      options.mutation.mutationKey
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey }, request: undefined };
@@ -477,10 +441,7 @@ export type CartControllerClearCartMutationError = ErrorType<unknown>;
 /**
  * @summary Clear cart
  */
-export const useCartControllerClearCart = <
-  TError = ErrorType<unknown>,
-  TContext = unknown,
->(
+export const useCartControllerClearCart = <TError = ErrorType<unknown>, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof cartControllerClearCart>>,
@@ -531,11 +492,7 @@ export const getCartControllerGetCartTotalQueryOptions = <
   params: MaybeRef<CartControllerGetCartTotalParams>,
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof cartControllerGetCartTotal>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof cartControllerGetCartTotal>>, TError, TData>
     >;
     request?: SecondParameter<typeof customInstance>;
   },
@@ -544,10 +501,9 @@ export const getCartControllerGetCartTotalQueryOptions = <
 
   const queryKey = getCartControllerGetCartTotalQueryKey(params);
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof cartControllerGetCartTotal>>
-  > = ({ signal }) =>
-    cartControllerGetCartTotal(params, requestOptions, signal);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof cartControllerGetCartTotal>>> = ({
+    signal,
+  }) => cartControllerGetCartTotal(params, requestOptions, signal);
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
     Awaited<ReturnType<typeof cartControllerGetCartTotal>>,
@@ -572,11 +528,7 @@ export function useCartControllerGetCartTotal<
   params: MaybeRef<CartControllerGetCartTotalParams>,
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof cartControllerGetCartTotal>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof cartControllerGetCartTotal>>, TError, TData>
     >;
     request?: SecondParameter<typeof customInstance>;
   },
@@ -584,21 +536,13 @@ export function useCartControllerGetCartTotal<
 ): UseQueryReturnType<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 } {
-  const queryOptions = getCartControllerGetCartTotalQueryOptions(
-    params,
-    options,
-  );
+  const queryOptions = getCartControllerGetCartTotalQueryOptions(params, options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryReturnType<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions, queryClient) as UseQueryReturnType<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 
-  query.queryKey = unref(queryOptions).queryKey as DataTag<
-    QueryKey,
-    TData,
-    TError
-  >;
+  query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData, TError>;
 
   return query;
 }
@@ -633,11 +577,7 @@ export const getCartControllerGetCartItemsCountQueryOptions = <
   params: MaybeRef<CartControllerGetCartItemsCountParams>,
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof cartControllerGetCartItemsCount>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof cartControllerGetCartItemsCount>>, TError, TData>
     >;
     request?: SecondParameter<typeof customInstance>;
   },
@@ -646,10 +586,9 @@ export const getCartControllerGetCartItemsCountQueryOptions = <
 
   const queryKey = getCartControllerGetCartItemsCountQueryKey(params);
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof cartControllerGetCartItemsCount>>
-  > = ({ signal }) =>
-    cartControllerGetCartItemsCount(params, requestOptions, signal);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof cartControllerGetCartItemsCount>>> = ({
+    signal,
+  }) => cartControllerGetCartItemsCount(params, requestOptions, signal);
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
     Awaited<ReturnType<typeof cartControllerGetCartItemsCount>>,
@@ -674,11 +613,7 @@ export function useCartControllerGetCartItemsCount<
   params: MaybeRef<CartControllerGetCartItemsCountParams>,
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof cartControllerGetCartItemsCount>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof cartControllerGetCartItemsCount>>, TError, TData>
     >;
     request?: SecondParameter<typeof customInstance>;
   },
@@ -686,21 +621,13 @@ export function useCartControllerGetCartItemsCount<
 ): UseQueryReturnType<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 } {
-  const queryOptions = getCartControllerGetCartItemsCountQueryOptions(
-    params,
-    options,
-  );
+  const queryOptions = getCartControllerGetCartItemsCountQueryOptions(params, options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryReturnType<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions, queryClient) as UseQueryReturnType<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 
-  query.queryKey = unref(queryOptions).queryKey as DataTag<
-    QueryKey,
-    TData,
-    TError
-  >;
+  query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData, TError>;
 
   return query;
 }
@@ -744,11 +671,7 @@ export const getCartControllerIsProductInCartQueryOptions = <
   params: MaybeRef<CartControllerIsProductInCartParams>,
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof cartControllerIsProductInCart>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof cartControllerIsProductInCart>>, TError, TData>
     >;
     request?: SecondParameter<typeof customInstance>;
   },
@@ -757,21 +680,16 @@ export const getCartControllerIsProductInCartQueryOptions = <
 
   const queryKey = getCartControllerIsProductInCartQueryKey(productId, params);
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof cartControllerIsProductInCart>>
-  > = ({ signal }) =>
-    cartControllerIsProductInCart(productId, params, requestOptions, signal);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof cartControllerIsProductInCart>>> = ({
+    signal,
+  }) => cartControllerIsProductInCart(productId, params, requestOptions, signal);
 
   return {
     queryKey,
     queryFn,
     enabled: computed(() => !!unref(productId)),
     ...queryOptions,
-  } as UseQueryOptions<
-    Awaited<ReturnType<typeof cartControllerIsProductInCart>>,
-    TError,
-    TData
-  >;
+  } as UseQueryOptions<Awaited<ReturnType<typeof cartControllerIsProductInCart>>, TError, TData>;
 };
 
 export type CartControllerIsProductInCartQueryResult = NonNullable<
@@ -791,11 +709,7 @@ export function useCartControllerIsProductInCart<
   params: MaybeRef<CartControllerIsProductInCartParams>,
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof cartControllerIsProductInCart>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof cartControllerIsProductInCart>>, TError, TData>
     >;
     request?: SecondParameter<typeof customInstance>;
   },
@@ -803,22 +717,13 @@ export function useCartControllerIsProductInCart<
 ): UseQueryReturnType<TData, TError> & {
   queryKey: DataTag<QueryKey, TData, TError>;
 } {
-  const queryOptions = getCartControllerIsProductInCartQueryOptions(
-    productId,
-    params,
-    options,
-  );
+  const queryOptions = getCartControllerIsProductInCartQueryOptions(productId, params, options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryReturnType<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions, queryClient) as UseQueryReturnType<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 
-  query.queryKey = unref(queryOptions).queryKey as DataTag<
-    QueryKey,
-    TData,
-    TError
-  >;
+  query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData, TError>;
 
   return query;
 }

@@ -50,9 +50,7 @@ describe('createProduct', () => {
 
     await createProduct({ data }, deps);
 
-    expect(
-      deps.productsQueryManager.invalidateProductsQuery,
-    ).toHaveBeenCalled();
+    expect(deps.productsQueryManager.invalidateProductsQuery).toHaveBeenCalled();
   });
 
   it('should notify with error message when createProductApi fails', async () => {

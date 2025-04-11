@@ -29,23 +29,19 @@ export const getProductControllerCreateResponseMock = (
 export const getProductControllerFindAllResponseMock = (
   overrideResponse: Partial<ProductListResponseDto> = {},
 ): ProductListResponseDto => ({
-  products: Array.from(
-    { length: faker.number.int({ min: 1, max: 10 }) },
-    (_, i) => i + 1,
-  ).map(() => ({
-    id: faker.number.int({ min: undefined, max: undefined }),
-    name: faker.string.alpha(20),
-    description: faker.helpers.arrayElement([
-      faker.string.alpha(20),
-      undefined,
-    ]),
-    price: faker.number.int({ min: undefined, max: undefined }),
-    imageUrl: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
-    stock: faker.number.int({ min: undefined, max: undefined }),
-    category: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
-    createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`,
-    updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`,
-  })),
+  products: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(
+    () => ({
+      id: faker.number.int({ min: undefined, max: undefined }),
+      name: faker.string.alpha(20),
+      description: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+      price: faker.number.int({ min: undefined, max: undefined }),
+      imageUrl: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+      stock: faker.number.int({ min: undefined, max: undefined }),
+      category: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+      createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`,
+      updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`,
+    }),
+  ),
   count: faker.number.int({ min: undefined, max: undefined }),
   ...overrideResponse,
 });
@@ -98,23 +94,19 @@ export const getProductControllerRemoveResponseMock = (
 export const getProductControllerSearchResponseMock = (
   overrideResponse: Partial<ProductListResponseDto> = {},
 ): ProductListResponseDto => ({
-  products: Array.from(
-    { length: faker.number.int({ min: 1, max: 10 }) },
-    (_, i) => i + 1,
-  ).map(() => ({
-    id: faker.number.int({ min: undefined, max: undefined }),
-    name: faker.string.alpha(20),
-    description: faker.helpers.arrayElement([
-      faker.string.alpha(20),
-      undefined,
-    ]),
-    price: faker.number.int({ min: undefined, max: undefined }),
-    imageUrl: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
-    stock: faker.number.int({ min: undefined, max: undefined }),
-    category: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
-    createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`,
-    updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`,
-  })),
+  products: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(
+    () => ({
+      id: faker.number.int({ min: undefined, max: undefined }),
+      name: faker.string.alpha(20),
+      description: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+      price: faker.number.int({ min: undefined, max: undefined }),
+      imageUrl: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+      stock: faker.number.int({ min: undefined, max: undefined }),
+      category: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+      createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`,
+      updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`,
+    }),
+  ),
   count: faker.number.int({ min: undefined, max: undefined }),
   ...overrideResponse,
 });

@@ -31,11 +31,11 @@ import { Toaster } from 'vue-sonner';
 import { Badge } from '@/components/ui/badge';
 import { ProductList } from '@/components/product';
 import { APP_CONFIG } from '@/config';
-import { useCartControllerGetCart } from '@/api/cart/cart.ts';
 import { VueQueryDevtools } from '@tanstack/vue-query-devtools';
+import { cartQueries } from '@/infrostruct/service';
 
 const USER_ID = APP_CONFIG.USER_ID;
-const { data: cartData } = useCartControllerGetCart({ userId: USER_ID });
+const { data: cartData } = cartQueries.getCart({ userId: USER_ID });
 </script>
 
 <template>

@@ -41,9 +41,7 @@ describe('createProduct', () => {
       quantity: 1,
     };
 
-    mockUpdateCartQuantityApi.mockResolvedValueOnce(
-      mockCartResponse as UpdateCartQuantityResponse,
-    );
+    mockUpdateCartQuantityApi.mockResolvedValueOnce(mockCartResponse as UpdateCartQuantityResponse);
 
     await updateCartQuantity(data, deps);
 
@@ -57,9 +55,7 @@ describe('createProduct', () => {
       quantity: 1,
     };
 
-    mockUpdateCartQuantityApi.mockResolvedValueOnce(
-      mockCartResponse as UpdateCartQuantityResponse,
-    );
+    mockUpdateCartQuantityApi.mockResolvedValueOnce(mockCartResponse as UpdateCartQuantityResponse);
 
     await updateCartQuantity(data, deps);
 
@@ -101,9 +97,7 @@ describe('createProduct', () => {
       quantity: 1,
     };
 
-    mockUpdateCartQuantityApi.mockResolvedValueOnce(
-      mockCartResponse as UpdateCartQuantityResponse,
-    );
+    mockUpdateCartQuantityApi.mockResolvedValueOnce(mockCartResponse as UpdateCartQuantityResponse);
 
     await updateCartQuantity(data, deps);
 

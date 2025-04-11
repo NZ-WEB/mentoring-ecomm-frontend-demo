@@ -76,9 +76,7 @@ export const getProductControllerCreateMutationOptions = <
 > => {
   const mutationKey = ['productControllerCreate'];
   const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation &&
-      'mutationKey' in options.mutation &&
-      options.mutation.mutationKey
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey }, request: undefined };
@@ -104,10 +102,7 @@ export type ProductControllerCreateMutationError = ErrorType<unknown>;
 /**
  * @summary Create a new product
  */
-export const useProductControllerCreate = <
-  TError = ErrorType<unknown>,
-  TContext = unknown,
->(
+export const useProductControllerCreate = <TError = ErrorType<unknown>, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof productControllerCreate>>,
@@ -158,11 +153,7 @@ export const getProductControllerFindAllQueryOptions = <
   params?: MaybeRef<ProductControllerFindAllParams>,
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof productControllerFindAll>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof productControllerFindAll>>, TError, TData>
     >;
     request?: SecondParameter<typeof customInstance>;
   },
@@ -171,9 +162,9 @@ export const getProductControllerFindAllQueryOptions = <
 
   const queryKey = getProductControllerFindAllQueryKey(params);
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof productControllerFindAll>>
-  > = ({ signal }) => productControllerFindAll(params, requestOptions, signal);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof productControllerFindAll>>> = ({
+    signal,
+  }) => productControllerFindAll(params, requestOptions, signal);
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
     Awaited<ReturnType<typeof productControllerFindAll>>,
@@ -198,11 +189,7 @@ export function useProductControllerFindAll<
   params?: MaybeRef<ProductControllerFindAllParams>,
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof productControllerFindAll>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof productControllerFindAll>>, TError, TData>
     >;
     request?: SecondParameter<typeof customInstance>;
   },
@@ -212,16 +199,11 @@ export function useProductControllerFindAll<
 } {
   const queryOptions = getProductControllerFindAllQueryOptions(params, options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryReturnType<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions, queryClient) as UseQueryReturnType<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 
-  query.queryKey = unref(queryOptions).queryKey as DataTag<
-    QueryKey,
-    TData,
-    TError
-  >;
+  query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData, TError>;
 
   return query;
 }
@@ -254,11 +236,7 @@ export const getProductControllerFindOneQueryOptions = <
   id: MaybeRef<number>,
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof productControllerFindOne>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof productControllerFindOne>>, TError, TData>
     >;
     request?: SecondParameter<typeof customInstance>;
   },
@@ -267,20 +245,16 @@ export const getProductControllerFindOneQueryOptions = <
 
   const queryKey = getProductControllerFindOneQueryKey(id);
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof productControllerFindOne>>
-  > = ({ signal }) => productControllerFindOne(id, requestOptions, signal);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof productControllerFindOne>>> = ({
+    signal,
+  }) => productControllerFindOne(id, requestOptions, signal);
 
   return {
     queryKey,
     queryFn,
     enabled: computed(() => !!unref(id)),
     ...queryOptions,
-  } as UseQueryOptions<
-    Awaited<ReturnType<typeof productControllerFindOne>>,
-    TError,
-    TData
-  >;
+  } as UseQueryOptions<Awaited<ReturnType<typeof productControllerFindOne>>, TError, TData>;
 };
 
 export type ProductControllerFindOneQueryResult = NonNullable<
@@ -299,11 +273,7 @@ export function useProductControllerFindOne<
   id: MaybeRef<number>,
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof productControllerFindOne>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof productControllerFindOne>>, TError, TData>
     >;
     request?: SecondParameter<typeof customInstance>;
   },
@@ -313,16 +283,11 @@ export function useProductControllerFindOne<
 } {
   const queryOptions = getProductControllerFindOneQueryOptions(id, options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryReturnType<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions, queryClient) as UseQueryReturnType<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 
-  query.queryKey = unref(queryOptions).queryKey as DataTag<
-    QueryKey,
-    TData,
-    TError
-  >;
+  query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData, TError>;
 
   return query;
 }
@@ -369,9 +334,7 @@ export const getProductControllerUpdateMutationOptions = <
 > => {
   const mutationKey = ['productControllerUpdate'];
   const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation &&
-      'mutationKey' in options.mutation &&
-      options.mutation.mutationKey
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey }, request: undefined };
@@ -397,10 +360,7 @@ export type ProductControllerUpdateMutationError = ErrorType<unknown>;
 /**
  * @summary Update product
  */
-export const useProductControllerUpdate = <
-  TError = ErrorType<unknown>,
-  TContext = unknown,
->(
+export const useProductControllerUpdate = <TError = ErrorType<unknown>, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof productControllerUpdate>>,
@@ -431,10 +391,7 @@ export const productControllerRemove = (
 ) => {
   id = unref(id);
 
-  return customInstance<ProductResponseDto>(
-    { url: `/products/${id}`, method: 'DELETE' },
-    options,
-  );
+  return customInstance<ProductResponseDto>({ url: `/products/${id}`, method: 'DELETE' }, options);
 };
 
 export const getProductControllerRemoveMutationOptions = <
@@ -456,9 +413,7 @@ export const getProductControllerRemoveMutationOptions = <
 > => {
   const mutationKey = ['productControllerRemove'];
   const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation &&
-      'mutationKey' in options.mutation &&
-      options.mutation.mutationKey
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
       ? options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
     : { mutation: { mutationKey }, request: undefined };
@@ -484,10 +439,7 @@ export type ProductControllerRemoveMutationError = ErrorType<unknown>;
 /**
  * @summary Delete product
  */
-export const useProductControllerRemove = <
-  TError = ErrorType<unknown>,
-  TContext = unknown,
->(
+export const useProductControllerRemove = <TError = ErrorType<unknown>, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof productControllerRemove>>,
@@ -536,11 +488,7 @@ export const getProductControllerSearchQueryOptions = <
   query: MaybeRef<string>,
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof productControllerSearch>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof productControllerSearch>>, TError, TData>
     >;
     request?: SecondParameter<typeof customInstance>;
   },
@@ -549,20 +497,16 @@ export const getProductControllerSearchQueryOptions = <
 
   const queryKey = getProductControllerSearchQueryKey(query);
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof productControllerSearch>>
-  > = ({ signal }) => productControllerSearch(query, requestOptions, signal);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof productControllerSearch>>> = ({
+    signal,
+  }) => productControllerSearch(query, requestOptions, signal);
 
   return {
     queryKey,
     queryFn,
     enabled: computed(() => !!unref(query)),
     ...queryOptions,
-  } as UseQueryOptions<
-    Awaited<ReturnType<typeof productControllerSearch>>,
-    TError,
-    TData
-  >;
+  } as UseQueryOptions<Awaited<ReturnType<typeof productControllerSearch>>, TError, TData>;
 };
 
 export type ProductControllerSearchQueryResult = NonNullable<
@@ -581,11 +525,7 @@ export function useProductControllerSearch<
   query: MaybeRef<string>,
   options?: {
     query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof productControllerSearch>>,
-        TError,
-        TData
-      >
+      UseQueryOptions<Awaited<ReturnType<typeof productControllerSearch>>, TError, TData>
     >;
     request?: SecondParameter<typeof customInstance>;
   },
@@ -595,16 +535,11 @@ export function useProductControllerSearch<
 } {
   const queryOptions = getProductControllerSearchQueryOptions(query, options);
 
-  const _query = useQuery(queryOptions, queryClient) as UseQueryReturnType<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  const _query = useQuery(queryOptions, queryClient) as UseQueryReturnType<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 
-  _query.queryKey = unref(queryOptions).queryKey as DataTag<
-    QueryKey,
-    TData,
-    TError
-  >;
+  _query.queryKey = unref(queryOptions).queryKey as DataTag<QueryKey, TData, TError>;
 
   return _query;
 }

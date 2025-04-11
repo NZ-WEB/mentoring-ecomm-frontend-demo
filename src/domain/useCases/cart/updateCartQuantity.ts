@@ -1,4 +1,4 @@
-import { getErrorMessage } from '@/domain/models';
+import { getErrorMessage, type CartData } from '@/domain/models';
 import type { CartQueryManager, INotifier } from '@/domain/services';
 
 export interface UpdateCartQuantityDTO {
@@ -7,20 +7,7 @@ export interface UpdateCartQuantityDTO {
   quantity: number;
 }
 
-export type CartItemDtoProduct = { [key: string]: unknown };
-export interface CartItemDto {
-  id: number;
-  productId: number;
-  quantity: number;
-  product: CartItemDtoProduct;
-}
-export interface UpdateCartQuantityResponse {
-  id: number;
-  userId: number;
-  items: CartItemDto[];
-  total: number;
-  itemsCount: number;
-}
+export type UpdateCartQuantityResponse = CartData;
 
 export type UpdateCartQuantityApiFn = (
   dto: UpdateCartQuantityDTO,

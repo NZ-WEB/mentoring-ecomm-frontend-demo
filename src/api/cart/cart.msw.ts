@@ -16,10 +16,7 @@ export const getCartControllerGetCartResponseMock = (
 ): CartResponseDto => ({
   id: faker.number.int({ min: undefined, max: undefined }),
   userId: faker.number.int({ min: undefined, max: undefined }),
-  items: Array.from(
-    { length: faker.number.int({ min: 1, max: 10 }) },
-    (_, i) => i + 1,
-  ).map(() => ({
+  items: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({
     id: faker.number.int({ min: undefined, max: undefined }),
     productId: faker.number.int({ min: undefined, max: undefined }),
     quantity: faker.number.int({ min: undefined, max: undefined }),
@@ -35,10 +32,7 @@ export const getCartControllerAddToCartResponseMock = (
 ): CartResponseDto => ({
   id: faker.number.int({ min: undefined, max: undefined }),
   userId: faker.number.int({ min: undefined, max: undefined }),
-  items: Array.from(
-    { length: faker.number.int({ min: 1, max: 10 }) },
-    (_, i) => i + 1,
-  ).map(() => ({
+  items: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({
     id: faker.number.int({ min: undefined, max: undefined }),
     productId: faker.number.int({ min: undefined, max: undefined }),
     quantity: faker.number.int({ min: undefined, max: undefined }),
@@ -54,10 +48,7 @@ export const getCartControllerUpdateCartItemResponseMock = (
 ): CartResponseDto => ({
   id: faker.number.int({ min: undefined, max: undefined }),
   userId: faker.number.int({ min: undefined, max: undefined }),
-  items: Array.from(
-    { length: faker.number.int({ min: 1, max: 10 }) },
-    (_, i) => i + 1,
-  ).map(() => ({
+  items: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({
     id: faker.number.int({ min: undefined, max: undefined }),
     productId: faker.number.int({ min: undefined, max: undefined }),
     quantity: faker.number.int({ min: undefined, max: undefined }),
@@ -73,10 +64,7 @@ export const getCartControllerRemoveFromCartResponseMock = (
 ): CartResponseDto => ({
   id: faker.number.int({ min: undefined, max: undefined }),
   userId: faker.number.int({ min: undefined, max: undefined }),
-  items: Array.from(
-    { length: faker.number.int({ min: 1, max: 10 }) },
-    (_, i) => i + 1,
-  ).map(() => ({
+  items: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({
     id: faker.number.int({ min: undefined, max: undefined }),
     productId: faker.number.int({ min: undefined, max: undefined }),
     quantity: faker.number.int({ min: undefined, max: undefined }),
@@ -92,10 +80,7 @@ export const getCartControllerClearCartResponseMock = (
 ): CartResponseDto => ({
   id: faker.number.int({ min: undefined, max: undefined }),
   userId: faker.number.int({ min: undefined, max: undefined }),
-  items: Array.from(
-    { length: faker.number.int({ min: 1, max: 10 }) },
-    (_, i) => i + 1,
-  ).map(() => ({
+  items: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({
     id: faker.number.int({ min: undefined, max: undefined }),
     productId: faker.number.int({ min: undefined, max: undefined }),
     quantity: faker.number.int({ min: undefined, max: undefined }),
@@ -224,9 +209,7 @@ export const getCartControllerClearCartMockHandler = (
 export const getCartControllerGetCartTotalMockHandler = (
   overrideResponse?:
     | unknown
-    | ((
-        info: Parameters<Parameters<typeof http.get>[1]>[0],
-      ) => Promise<unknown> | unknown),
+    | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<unknown> | unknown),
 ) => {
   return http.get('*/cart/total', async (info) => {
     await delay(1000);
@@ -240,9 +223,7 @@ export const getCartControllerGetCartTotalMockHandler = (
 export const getCartControllerGetCartItemsCountMockHandler = (
   overrideResponse?:
     | unknown
-    | ((
-        info: Parameters<Parameters<typeof http.get>[1]>[0],
-      ) => Promise<unknown> | unknown),
+    | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<unknown> | unknown),
 ) => {
   return http.get('*/cart/count', async (info) => {
     await delay(1000);
@@ -256,9 +237,7 @@ export const getCartControllerGetCartItemsCountMockHandler = (
 export const getCartControllerIsProductInCartMockHandler = (
   overrideResponse?:
     | unknown
-    | ((
-        info: Parameters<Parameters<typeof http.get>[1]>[0],
-      ) => Promise<unknown> | unknown),
+    | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<unknown> | unknown),
 ) => {
   return http.get('*/cart/check/:productId', async (info) => {
     await delay(1000);

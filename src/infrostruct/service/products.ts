@@ -5,10 +5,7 @@ import {
   useProductControllerCreate,
 } from '@/api/products/products';
 import type { Product } from '@/domain/models/product';
-import {
-  createProduct,
-  type ProductDTO,
-} from '@/domain/useCases/product/createProduct';
+import { createProduct, type ProductDTO } from '@/domain/useCases/product/createProduct';
 import type { CreateProductDependencies } from '@/domain/useCases/product/createProduct';
 import { sonnerNotifier } from '@/infrostruct/notifier/sonnerNotirier';
 
@@ -30,10 +27,7 @@ export function useCreateProductAdapter() {
           queryKey: getProductControllerFindAllQueryKey(),
         });
       },
-      setProductQueryData: (
-        id: number,
-        cb: (productData: Product) => Product,
-      ) => {
+      setProductQueryData: (id: number, cb: (productData: Product) => Product) => {
         queryClient.setQueryData(getProductControllerFindOneQueryKey(id), cb);
       },
       setProductsQueryData: (cb: (productData: Product[]) => Product[]) => {
@@ -43,8 +37,7 @@ export function useCreateProductAdapter() {
     createProductApi: mutateAsync,
   };
 
-  const create = (data: { data: ProductDTO }) =>
-    createProduct(data, dependencies);
+  const create = (data: { data: ProductDTO }) => createProduct(data, dependencies);
 
   return {
     create,

@@ -2,11 +2,11 @@ import globals from 'globals';
 import pluginJs from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import pluginVue from 'eslint-plugin-vue';
-import prettier from 'eslint-plugin-prettier/recommended';
+import pluginPrettier from 'eslint-plugin-prettier';
 import vueConfigTypescript from '@vue/eslint-config-typescript';
 import vueConfigPrettier from '@vue/eslint-config-prettier';
 
-/** @type {import('eslint').Linter.Config[]} */
+/** @type {import('eslint').Linter.Config} */
 export default [
   {
     languageOptions: {
@@ -42,16 +42,15 @@ export default [
       },
     },
   },
+  // prettier integration
   {
+    plugins: {
+      prettier: pluginPrettier,
+    },
     rules: {
       ...vueConfigTypescript.rules,
       ...vueConfigPrettier.rules,
-      'prettier/prettier': [
-        'warn',
-        {
-          singleQuote: true,
-        },
-      ],
+      'prettier/prettier': ['error', { singleQuote: true }],
       'vue/multi-word-component-names': 'off',
       'vue/attribute-hyphenation': 'off',
       'vue/no-v-html': 'off',
@@ -63,12 +62,5 @@ export default [
   },
   {
     ignores: ['node_modules', '.nuxt', '.output', 'dist'],
-  },
-  // prettier
-  prettier,
-  {
-    rules: {
-      'prettier/prettier': ['error', { singleQuote: true }],
-    },
   },
 ];
