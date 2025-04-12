@@ -1,22 +1,19 @@
-import type { Product } from '@/domain/models/product';
 import type { INotifier } from '@/domain/services/notifier';
 import type { ProductsQueryManager } from '@/domain/services/queries';
 import { getErrorMessage } from '@/domain/models';
+import type { ProductResponseDto } from '@/api/model';
 
 export type DeleteProductDTO = {
-  productId: number;
+  id: number;
 };
 
 export interface DeleteProductDependencies {
   notifier: INotifier;
   productsQueryManager: ProductsQueryManager;
-  deleteProductApi: (data: { data: DeleteProductDTO }) => Promise<Product>;
+  deleteProductApi: (data: DeleteProductDTO) => Promise<ProductResponseDto>;
 }
 
-export const deleteProduct = async (
-  data: { data: DeleteProductDTO },
-  deps: DeleteProductDependencies,
-) => {
+export const deleteProduct = async (data: DeleteProductDTO, deps: DeleteProductDependencies) => {
   try {
     await deps.deleteProductApi(data);
     deps.productsQueryManager.invalidateProductsQuery();

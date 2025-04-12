@@ -28,7 +28,7 @@ describe('deleteProduct', () => {
 
   it('1 should call createProductApi with correct data', async () => {
     const data: DeleteProductDTO = {
-      productId: 1,
+      id: 1,
     };
 
     const responseData: ProductDTO = {
@@ -39,14 +39,14 @@ describe('deleteProduct', () => {
 
     mockDeleteProductApi.mockResolvedValueOnce({ id: 1, ...responseData } as Product);
 
-    await deleteProduct({ data }, deps);
+    await deleteProduct(data, deps);
 
-    expect(mockDeleteProductApi).toHaveBeenCalledWith({ data });
+    expect(mockDeleteProductApi).toHaveBeenCalledWith(data);
   });
 
   it('2 should synchronize the product list state after successful deletion', async () => {
     const data: DeleteProductDTO = {
-      productId: 1,
+      id: 1,
     };
 
     const responseData: ProductDTO = {
@@ -56,14 +56,14 @@ describe('deleteProduct', () => {
     };
     mockDeleteProductApi.mockResolvedValueOnce({ id: 1, ...responseData } as Product);
 
-    await deleteProduct({ data }, deps);
+    await deleteProduct(data, deps);
 
     expect(deps.productsQueryManager.invalidateProductsQuery).toHaveBeenCalled();
   });
 
   it('3 should handle the successful deletion without errors', async () => {
     const data: DeleteProductDTO = {
-      productId: 1,
+      id: 1,
     };
 
     const responseData: ProductDTO = {
@@ -74,7 +74,7 @@ describe('deleteProduct', () => {
 
     mockDeleteProductApi.mockResolvedValueOnce({ id: 1, ...responseData } as Product);
 
-    await deleteProduct({ data }, deps);
+    await deleteProduct(data, deps);
 
     expect(mockNotify).not.toHaveBeenCalled();
   });
@@ -85,10 +85,10 @@ describe('deleteProduct', () => {
     mockDeleteProductApi.mockRejectedValueOnce(error);
 
     const data: DeleteProductDTO = {
-      productId: 1,
+      id: 1,
     };
 
-    await deleteProduct({ data }, deps);
+    await deleteProduct(data, deps);
 
     expect(mockNotify).toHaveBeenCalledWith('Something went wrong');
   });
@@ -99,10 +99,10 @@ describe('deleteProduct', () => {
     mockDeleteProductApi.mockRejectedValueOnce(error);
 
     const data: DeleteProductDTO = {
-      productId: 1,
+      id: 1,
     };
 
-    await deleteProduct({ data }, deps);
+    await deleteProduct(data, deps);
 
     expect(deps.productsQueryManager.invalidateProductsQuery).not.toHaveBeenCalled();
   });

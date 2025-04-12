@@ -2,19 +2,22 @@ import { useQueryClient } from '@tanstack/vue-query';
 import {
   getProductControllerFindAllQueryKey,
   getProductControllerFindOneQueryKey,
-  useProductControllerCreate,
+  useProductControllerRemove,
 } from '@/api/products/products';
 import type { Product } from '@/domain/models/product';
-import { createProduct, type ProductDTO } from '@/domain/useCases/product/createProduct';
-import type { CreateProductDependencies } from '@/domain/useCases/product/createProduct';
+import { deleteProduct } from '@/domain/useCases/product/deleteProduct';
+import type {
+  DeleteProductDependencies,
+  DeleteProductDTO,
+} from '@/domain/useCases/product/deleteProduct';
 import { sonnerNotifier } from '@/infrostruct/notifier/sonnerNotirier';
 
 export function useDeleteProductAdapter() {
   const queryClient = useQueryClient();
 
-  const { mutateAsync, isPending, data } = useProductControllerCreate();
+  const { mutateAsync, isPending, data } = useProductControllerRemove();
 
-  const dependencies: CreateProductDependencies = {
+  const dependencies: DeleteProductDependencies = {
     notifier: sonnerNotifier,
     productsQueryManager: {
       invalidateProductQuery: (productId: number) => {
@@ -34,13 +37,16 @@ export function useDeleteProductAdapter() {
         queryClient.setQueryData(getProductControllerFindAllQueryKey(), cb);
       },
     },
-    createProductApi: mutateAsync,
+    deleteProductApi: async (data: DeleteProductDTO) => {
+      const res = await mutateAsync(data);
+      return res;
+    },
   };
 
-  const create = (data: { data: ProductDTO }) => createProduct(data, dependencies);
+  const del = (data: DeleteProductDTO) => deleteProduct(data, dependencies);
 
   return {
-    create,
+    del,
     isPending,
     data,
   };
