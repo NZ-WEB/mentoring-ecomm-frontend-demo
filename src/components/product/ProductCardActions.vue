@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { watch } from 'vue';
 import type { CartData } from '@/domain/models';
-import { getCartControllerGetCartQueryKey } from '@/api/cart/cart.ts';
 import { Button } from '@/components/ui/button';
 import type { Ref } from 'vue';
 import {
@@ -12,14 +10,15 @@ import {
   NumberFieldInput,
 } from '@/components/ui/number-field';
 
-import { useCartControllerRemoveFromCart } from '@/api/cart/cart.ts';
-
 import { APP_CONFIG } from '@/config';
-import { useQueryClient } from '@tanstack/vue-query';
-import { useUpdateCartQuantityAdapter, useAddProductToCartAdapter } from '@/infrostruct/service';
+
+import {
+  useUpdateCartQuantityAdapter,
+  useAddProductToCartAdapter,
+  useDeleteProductAdapter,
+} from '@/infrostruct/service';
 import { cartQueries } from '@/infrostruct/service/query';
 
-const queryClient = useQueryClient();
 const USER_ID = APP_CONFIG.USER_ID;
 
 const { data: cartData } = cartQueries.getCart({
@@ -31,7 +30,7 @@ defineProps<{
 }>();
 
 const { add: addToCard } = useAddProductToCartAdapter();
-const { mutate: removeFromCart, data: removeFromCartResponse } = useCartControllerRemoveFromCart();
+const { del: removeFromCart } = useDeleteProductAdapter();
 const { update: updateCartQuantity } = useUpdateCartQuantityAdapter();
 
 const handleAddToCart = (productId: number) => {
@@ -60,10 +59,7 @@ const handleRemoveFromCart = (productId: number) => {
   if (!itemId) throw new Error(`Cart item with product with id ${productId} does not exist`);
 
   removeFromCart({
-    itemId: itemId.id,
-    params: {
-      cartId: cartData.value.id,
-    },
+    id: itemId.id,
   });
 };
 
@@ -80,16 +76,6 @@ const handleUpdateCartQuantity = (productId: number, quantity: number) => {
     quantity: quantity,
   });
 };
-
-function invalidateCart() {
-  queryClient.invalidateQueries<CartData>({
-    queryKey: getCartControllerGetCartQueryKey({ userId: USER_ID }),
-  });
-}
-
-watch([removeFromCartResponse], () => {
-  invalidateCart();
-});
 </script>
 <template>
   <Button
